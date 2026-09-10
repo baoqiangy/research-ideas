@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluating Cybersecurity Risk Prioritization Using Qualitative and Quantitative Risk Assessment Methods in a Simulated Organization</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.65;
+    margin: 0;
+    background: #f4f6f8;
+    color: #1f2937;
+  }
+  .container {
+    max-width: 1050px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 48px 56px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    border-radius: 12px;
+  }
+  h1, h2, h3 {
+    color: #123b5d;
+    line-height: 1.25;
+  }
+  h1 {
+    font-size: 2.1rem;
+    margin-top: 0;
+    border-bottom: 3px solid #2b6f9f;
+    padding-bottom: 12px;
+  }
+  h2 {
+    margin-top: 38px;
+    font-size: 1.5rem;
+  }
+  h3 {
+    margin-top: 26px;
+    font-size: 1.15rem;
+  }
+  p { margin: 12px 0; }
+  blockquote {
+    background: #eef5fa;
+    border-left: 5px solid #2b6f9f;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-style: italic;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 26px;
+    font-size: 0.96rem;
+  }
+  th, td {
+    border: 1px solid #cfd8df;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #eaf1f6;
+    color: #123b5d;
+  }
+  code, pre {
+    font-family: Consolas, Monaco, monospace;
+  }
+  pre {
+    background: #161b22;
+    color: #f0f6fc;
+    padding: 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    line-height: 1.45;
+  }
+  .formula {
+    font-weight: bold;
+    background: #f6f8fa;
+    padding: 10px 14px;
+    border-left: 4px solid #708090;
+    margin: 12px 0;
+  }
+  ul, ol { padding-left: 24px; }
+  li { margin: 7px 0; }
+  .callout {
+    background: #fff8e6;
+    border: 1px solid #efd58a;
+    padding: 16px 18px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Evaluating Cybersecurity Risk Prioritization Using Qualitative and Quantitative Risk Assessment Methods in a Simulated Organization</h1>
+
+<p>The core research question could be:</p>
+
+<blockquote>How does the choice of qualitative versus semi-quantitative cybersecurity risk assessment affect the prioritization of cybersecurity risks?</blockquote>
+
+<p>This is much more manageable.</p>
+
+<p>You do <strong>not</strong> need access to a real company. You can create a realistic hypothetical organization—for example:</p>
+
+<p><strong>A 100–200 employee healthcare clinic or small business</strong> with:</p>
+
+<ul>
+  <li>Active Directory</li>
+  <li>employee laptops</li>
+  <li>Microsoft 365/email</li>
+  <li>Wi-Fi</li>
+  <li>web server</li>
+  <li>database server</li>
+  <li>VPN</li>
+  <li>cloud storage</li>
+  <li>backup system</li>
+  <li>firewall</li>
+  <li>remote employees</li>
+  <li>third-party vendors</li>
+</ul>
+
+<p>Then create perhaps <strong>12–20 realistic cybersecurity risk scenarios</strong>.</p>
+
+<table>
+<thead>
+<tr><th>Risk</th><th>Asset</th><th>Threat</th><th>Vulnerability</th></tr>
+</thead>
+<tbody>
+<tr><td>R1</td><td>Email</td><td>Phishing</td><td>Weak user awareness</td></tr>
+<tr><td>R2</td><td>VPN</td><td>Credential attack</td><td>No MFA</td></tr>
+<tr><td>R3</td><td>Database</td><td>Ransomware</td><td>Poor segmentation</td></tr>
+<tr><td>R4</td><td>Web server</td><td>Exploitation</td><td>Unpatched software</td></tr>
+<tr><td>R5</td><td>Cloud storage</td><td>Data exposure</td><td>Misconfiguration</td></tr>
+<tr><td>R6</td><td>Employee laptop</td><td>Malware</td><td>Local admin privileges</td></tr>
+<tr><td>R7</td><td>Backups</td><td>Ransomware</td><td>Backups accessible from domain</td></tr>
+<tr><td>R8</td><td>Vendor connection</td><td>Supply-chain compromise</td><td>Excessive vendor privileges</td></tr>
+<tr><td>R9</td><td>Active Directory</td><td>Credential theft</td><td>Weak privileged-account controls</td></tr>
+<tr><td>R10</td><td>Sensitive records</td><td>Insider misuse</td><td>Excessive permissions</td></tr>
+</tbody>
+</table>
+
+<h2>Phase 1 — Define the Organization</h2>
+
+<p>First create a fictional organization and document its environment.</p>
+
+<p>I would limit it to around:</p>
+<ul>
+  <li>100–200 users</li>
+  <li>10–15 important assets</li>
+  <li>12–20 risks</li>
+  <li>5–8 major security controls</li>
+</ul>
+
+<p>Do <strong>not</strong> try to model an entire enterprise.</p>
+
+<p>You should create an asset inventory such as:</p>
+
+<table>
+<thead>
+<tr><th>Asset</th><th>Function</th><th>Sensitivity</th><th>Criticality</th></tr>
+</thead>
+<tbody>
+<tr><td>Patient/customer database</td><td>Stores records</td><td>High</td><td>Critical</td></tr>
+<tr><td>Active Directory</td><td>Authentication</td><td>High</td><td>Critical</td></tr>
+<tr><td>Email system</td><td>Communication</td><td>Medium</td><td>High</td></tr>
+<tr><td>Web server</td><td>Public website</td><td>Medium</td><td>Medium</td></tr>
+<tr><td>Backup server</td><td>Recovery</td><td>High</td><td>Critical</td></tr>
+</tbody>
+</table>
+
+<p>This becomes the foundation for everything else.</p>
+
+<h2>Phase 2 — Establish the NIST Framework</h2>
+
+<p>Use <strong>NIST CSF 2.0</strong> as the governance framework rather than trying to use several frameworks simultaneously.</p>
+
+<p>You can map the organization against:</p>
+
+<p><strong>Govern → Identify → Protect → Detect → Respond → Recover.</strong></p>
+
+<p>You can create a simplified Current Profile.</p>
+
+<table>
+<thead>
+<tr><th>CSF Area</th><th>Current Condition</th></tr>
+</thead>
+<tbody>
+<tr><td>GV.RM – Risk Management</td><td>Informal</td></tr>
+<tr><td>ID.AM – Asset Management</td><td>Partial inventory</td></tr>
+<tr><td>PR.AA – Identity Management</td><td>MFA only for admins</td></tr>
+<tr><td>PR.PS – Platform Security</td><td>Irregular patching</td></tr>
+<tr><td>DE.CM – Continuous Monitoring</td><td>Limited</td></tr>
+<tr><td>RC.RP – Recovery Planning</td><td>Backups exist but rarely tested</td></tr>
+</tbody>
+</table>
+
+<p>Then create a <strong>Target Profile</strong> showing what the organization should eventually achieve.</p>
+
+<p>That gives the GRC part of the project a clear role instead of allowing GRC to become the entire project.</p>
+
+<h2>Phase 3 — Identify Threats and Vulnerabilities</h2>
+
+<p>You should identify realistic threat scenarios for each asset.</p>
+
+<p>For instance:</p>
+
+<blockquote>Threat actor compromises an employee through a phishing email and uses stolen credentials to access cloud storage containing sensitive data.</blockquote>
+
+<p>Break it down into:</p>
+<ul>
+  <li><strong>Asset:</strong> Cloud storage</li>
+  <li><strong>Threat:</strong> Credential theft</li>
+  <li><strong>Vulnerability:</strong> No phishing-resistant MFA</li>
+  <li><strong>Impact:</strong> Disclosure of sensitive records</li>
+</ul>
+
+<p>Another:</p>
+
+<blockquote>Ransomware reaches the backup server because backup infrastructure is not sufficiently isolated from production systems.</blockquote>
+
+<p>This is considerably better than simply writing things like:</p>
+
+<blockquote>Ransomware is a high risk.</blockquote>
+
+<p>You should assess <strong>specific risk scenarios</strong>.</p>
+
+<h2>Phase 4 — Perform Qualitative Risk Assessment</h2>
+
+<p>Now apply the first method.</p>
+
+<p><strong>Likelihood</strong></p>
+<ol>
+  <li>Rare</li>
+  <li>Unlikely</li>
+  <li>Possible</li>
+  <li>Likely</li>
+  <li>Almost Certain</li>
+</ol>
+
+<p><strong>Impact</strong></p>
+<ol>
+  <li>Negligible</li>
+  <li>Minor</li>
+  <li>Moderate</li>
+  <li>Major</li>
+  <li>Severe</li>
+</ol>
+
+<div class="formula">Risk Score = Likelihood × Impact</div>
+
+<table>
+<thead>
+<tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Score</th></tr>
+</thead>
+<tbody>
+<tr><td>Phishing compromise</td><td>5</td><td>4</td><td>20</td></tr>
+<tr><td>Ransomware</td><td>4</td><td>5</td><td>20</td></tr>
+<tr><td>Web exploitation</td><td>3</td><td>4</td><td>12</td></tr>
+<tr><td>Insider misuse</td><td>2</td><td>5</td><td>10</td></tr>
+<tr><td>DDoS</td><td>3</td><td>2</td><td>6</td></tr>
+</tbody>
+</table>
+
+<p>This produces the qualitative risk ranking.</p>
+
+<h2>Phase 5 — Perform a Quantitative or Semi-Quantitative Assessment</h2>
+
+<p>You do <strong>not</strong> need to perform a full actuarial quantitative analysis. That could become unnecessarily complicated because you probably will not have reliable historical financial-loss data.</p>
+
+<p>Instead, use a <strong>semi-quantitative model</strong>.</p>
+
+<div class="formula">Expected Annual Loss = Probability × Estimated Impact</div>
+
+<p>Suppose:</p>
+
+<p>Phishing probability = 40% per year<br>
+Estimated loss = $80,000</p>
+
+<p>Then:</p>
+
+<p><strong>Expected loss = 0.40 × $80,000 = $32,000/year</strong></p>
+
+<p>For ransomware:</p>
+
+<p>Probability = 15%<br>
+Impact = $300,000</p>
+
+<p>Expected loss:</p>
+
+<p><strong>0.15 × $300,000 = $45,000/year</strong></p>
+
+<p>Now something interesting may happen.</p>
+
+<p>The qualitative ranking might be:</p>
+<ol>
+  <li>Phishing</li>
+  <li>Ransomware</li>
+  <li>Web attack</li>
+  <li>Insider threat</li>
+</ol>
+
+<p>while the semi-quantitative ranking might become:</p>
+<ol>
+  <li>Ransomware</li>
+  <li>Insider threat</li>
+  <li>Phishing</li>
+  <li>Web attack</li>
+</ol>
+
+<div class="callout"><strong>That difference becomes the research result.</strong></div>
+
+<h2>Phase 6 — Compare the Prioritization Methods</h2>
+
+<p>This should be the heart of the project.</p>
+
+<p>You can compare:</p>
+
+<p><strong>Method A:</strong> qualitative 5×5 risk matrix</p>
+
+<p>against</p>
+
+<p><strong>Method B:</strong> semi-quantitative expected-loss model.</p>
+
+<p>Measure things such as:</p>
+<ul>
+  <li>change in risk ranking</li>
+  <li>agreement between methods</li>
+  <li>risks that move substantially up/down</li>
+  <li>sensitivity to likelihood assumptions</li>
+  <li>sensitivity to impact assumptions</li>
+  <li>effect on control-investment decisions</li>
+</ul>
+
+<p>A useful statistical measure would be <strong>Spearman rank correlation</strong>.</p>
+
+<p>For example, if the two assessment methods produce very similar rankings:</p>
+
+<p><strong>ρ ≈ 0.9</strong></p>
+
+<p>If they prioritize risks quite differently:</p>
+
+<p><strong>ρ ≈ 0.4</strong></p>
+
+<p>Now the thesis contains actual empirical analysis rather than simply describing GRC frameworks.</p>
+
+<h2>Phase 7 — Introduce Security Controls</h2>
+
+<p>Next, introduce possible mitigations.</p>
+
+<table>
+<thead>
+<tr><th>Risk</th><th>Proposed Control</th></tr>
+</thead>
+<tbody>
+<tr><td>Phishing</td><td>MFA + awareness training</td></tr>
+<tr><td>Ransomware</td><td>Network segmentation + immutable backup</td></tr>
+<tr><td>Vulnerability exploitation</td><td>Patch-management program</td></tr>
+<tr><td>Credential theft</td><td>Privileged access management</td></tr>
+<tr><td>Cloud exposure</td><td>Configuration monitoring</td></tr>
+</tbody>
+</table>
+
+<p>Estimate the cost of each control.</p>
+
+<p>For example:</p>
+<ul>
+  <li>MFA = $12,000/year</li>
+  <li>Backup improvement = $25,000</li>
+  <li>Security awareness = $5,000/year</li>
+  <li>SIEM = $30,000/year</li>
+</ul>
+
+<p>Then recalculate risk.</p>
+
+<p>This creates:</p>
+
+<p><strong>Inherent Risk → Control → Residual Risk</strong></p>
+
+<p>That is very relevant to real GRC work.</p>
+
+<h2>Phase 8 — Examine How Prioritization Changes Decisions</h2>
+
+<p>This gives the project an especially useful practical question:</p>
+
+<blockquote>If the organization has only $50,000 available for cybersecurity improvements, would qualitative and quantitative risk assessment methods recommend the same investments?</blockquote>
+
+<h3>Qualitative Model</h3>
+
+<p>Recommends:</p>
+<ul>
+  <li>MFA — $12K</li>
+  <li>awareness — $5K</li>
+  <li>SIEM — $30K</li>
+</ul>
+
+<p><strong>Total = $47K</strong></p>
+
+<h3>Quantitative Model</h3>
+
+<p>Might recommend:</p>
+<ul>
+  <li>MFA — $12K</li>
+  <li>immutable backup — $25K</li>
+  <li>patch-management improvements — $10K</li>
+</ul>
+
+<p><strong>Total = $47K</strong></p>
+
+<p>Now you can demonstrate that <strong>risk methodology can influence actual cybersecurity spending decisions</strong>.</p>
+
+<p>That is a much stronger master's research project.</p>
+
+<h2>Environment Setup</h2>
+
+<p>The nice part about this project is that it does <strong>not require a complicated cyber range</strong>.</p>
+
+<p>The minimum environment can simply be:</p>
+
+<pre><code>Research Workstation
+│
+├── Python
+│   ├── pandas
+│   ├── numpy
+│   ├── scipy
+│   └── matplotlib
+│
+├── Excel / CSV
+│
+├── Risk Register
+│
+├── Asset Inventory
+│
+├── NIST CSF Mapping
+│
+└── Analysis Scripts</code></pre>
+
+<p>You could maintain a CSV such as:</p>
+
+<pre><code>risk_id
+asset
+threat
+vulnerability
+likelihood
+impact
+qualitative_score
+annual_probability
+financial_impact
+annual_expected_loss
+control_cost
+residual_probability
+residual_loss</code></pre>
+
+<p>Python could then automatically calculate risk scores and generate comparisons.</p>
+
+<pre><code>import pandas as pd
+
+df = pd.read_csv("risk_register.csv")
+
+df["qualitative_risk"] = (
+    df["likelihood"] * df["impact"]
+)
+
+df["expected_annual_loss"] = (
+    df["annual_probability"]
+    * df["financial_impact"]
+)
+
+print(
+    df.sort_values(
+        "expected_annual_loss",
+        ascending=False
+    )
+)</code></pre>
+
+<p>You could then use Python to generate:</p>
+<ul>
+  <li>ranked risk tables</li>
+  <li>risk matrices</li>
+  <li>bar charts</li>
+  <li>before/after-control comparisons</li>
+  <li>rank correlations</li>
+  <li>sensitivity analyses</li>
+</ul>
+
+<h2>Optional Technical Environment</h2>
+
+<p>If you want the project to contain a small hands-on cybersecurity component, you could create a very limited virtual environment:</p>
+
+<pre><code>VirtualBox / VMware
+        │
+        ├── pfSense
+        │
+        ├── Windows Server / AD
+        │
+        ├── Windows Client
+        │
+        ├── Ubuntu Web Server
+        │
+        └── Wazuh</code></pre>
+
+<p>But I would consider this <strong>optional</strong>.</p>
+
+<p>There is no reason to build a large cyber lab unless you intend to derive likelihood or control-effectiveness measurements experimentally.</p>
+
+<p>Otherwise, the lab could consume weeks without answering the research question.</p>
+
+<h2>Data Collection</h2>
+
+<p>You have several reasonable choices.</p>
+
+<p>The easiest and probably safest master's-project approach is:</p>
+
+<p><strong>scenario-based data + published cybersecurity data + clearly documented assumptions.</strong></p>
+
+<p>You can obtain likelihood or cost estimates from:</p>
+
+<ul>
+  <li>published breach reports</li>
+  <li>cybersecurity insurance studies</li>
+  <li>government reports</li>
+  <li>academic papers</li>
+  <li>vulnerability statistics</li>
+  <li>incident reports</li>
+</ul>
+
+<p>Every assumption should have either:</p>
+
+<ol>
+  <li>a source, or</li>
+  <li>an explicitly stated rationale.</li>
+</ol>
+
+<p>For example:</p>
+
+<blockquote>Annual probability of ransomware compromise = 0.15.</blockquote>
+
+<p>You should explain where <strong>0.15</strong> came from instead of inventing it silently.</p>
+
+<p>A more ambitious project could recruit <strong>GRC/security professionals</strong> and ask them to assess the same scenarios. You could then study inter-rater variability, but that would introduce human-subject research and potentially IRB requirements.</p>
+
+<p>I would avoid that unless you specifically want human-subject research.</p>
+
+<h2>Recommended Research Questions</h2>
+
+<p>I would recommend these three:</p>
+
+<p><strong>RQ1:</strong> How does qualitative versus semi-quantitative cybersecurity risk assessment affect the ranking of identified cybersecurity risks?</p>
+
+<p><strong>RQ2:</strong> Which types of cybersecurity risks experience the greatest changes in priority between the two assessment approaches?</p>
+
+<p><strong>RQ3:</strong> How do differences in risk prioritization affect recommended cybersecurity control investments under a fixed security budget?</p>
+
+<p>These are specific, measurable, and answerable.</p>
+
+<p>A good hypothesis could be:</p>
+
+<blockquote><strong>H1:</strong> Qualitative and semi-quantitative risk assessment methods will produce significantly different priority rankings for cybersecurity risks.</blockquote>
+
+<p>A second:</p>
+
+<blockquote><strong>H2:</strong> Differences in risk prioritization will result in different recommendations for cybersecurity control investments.</blockquote>
+
+<h2>What the Final Project Would Actually Produce</h2>
+
+<p>By the end, you should have something tangible:</p>
+
+<ol>
+  <li>A hypothetical organizational environment.</li>
+  <li>An asset inventory.</li>
+  <li>Approximately 12–20 cybersecurity risk scenarios.</li>
+  <li>A NIST CSF 2.0 Current and Target Profile.</li>
+  <li>A risk register.</li>
+  <li>A qualitative risk assessment.</li>
+  <li>A semi-quantitative risk assessment.</li>
+  <li>A comparison of risk rankings.</li>
+  <li>A control-cost and residual-risk analysis.</li>
+  <li>A budget-constrained cybersecurity improvement plan.</li>
+  <li>Python scripts and visualizations.</li>
+  <li>Conclusions about when each assessment method may be more useful.</li>
+</ol>
+
+<p>This is a <strong>much more defensible master's project</strong> than trying to determine broadly “how organizations can improve cybersecurity risk management.”</p>
+
+<p>Also, keep <strong>NIST SP 800-37 RMF in the literature/background</strong>, rather than attempting to implement the entire RMF. SP 800-37 covers a much larger lifecycle—including preparation, categorization, control selection, implementation, assessment, authorization, and continuous monitoring—so making the entire RMF the experimental subject could expand the project again.</p>
+
+<p>The strongest scope is therefore:</p>
+
+<blockquote><strong>NIST CSF 2.0 provides the governance context; NIST SP 800-30 provides the risk-assessment structure; qualitative versus semi-quantitative assessment provides the experiment; and differences in risk/control prioritization provide the measurable result.</strong></blockquote>
+
+<p>That is narrow enough for a master's project while still leaving you with meaningful GRC and cybersecurity risk-management work.</p>
+
+</div>
+</body>
+</html>
