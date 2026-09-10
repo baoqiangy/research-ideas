@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluating Human and Artificial Intelligence Detection of Traditional and AI-Enhanced Social Engineering Attacks</title>
+<style>
+    :root{
+        --bg:#f6f8fb;
+        --card:#ffffff;
+        --text:#1f2937;
+        --muted:#5f6b7a;
+        --accent:#244a73;
+        --accent2:#e8f0f8;
+        --border:#d9e1ea;
+        --code:#111827;
+        --codeText:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{
+        margin:0;
+        font-family:Arial, Helvetica, sans-serif;
+        background:var(--bg);
+        color:var(--text);
+        line-height:1.65;
+    }
+    .hero{
+        background:linear-gradient(135deg,#17324d,#2b5f8e);
+        color:#fff;
+        padding:56px 24px;
+    }
+    .hero-inner{
+        max-width:1100px;
+        margin:auto;
+    }
+    h1{
+        margin:0 0 14px;
+        font-size:2.25rem;
+        line-height:1.18;
+    }
+    .subtitle{
+        max-width:900px;
+        font-size:1.05rem;
+        color:#e7eef6;
+    }
+    main{
+        max-width:1100px;
+        margin:32px auto 64px;
+        padding:0 20px;
+    }
+    section{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:14px;
+        padding:28px;
+        margin:20px 0;
+        box-shadow:0 4px 14px rgba(0,0,0,.04);
+    }
+    h2{
+        color:var(--accent);
+        margin-top:0;
+        border-bottom:2px solid var(--accent2);
+        padding-bottom:8px;
+    }
+    h3{
+        color:#314f6f;
+        margin-top:24px;
+    }
+    table{
+        width:100%;
+        border-collapse:collapse;
+        margin:16px 0;
+        overflow:hidden;
+        border-radius:10px;
+    }
+    th, td{
+        border:1px solid var(--border);
+        padding:12px;
+        text-align:left;
+        vertical-align:top;
+    }
+    th{
+        background:#eef4fa;
+        color:#213b55;
+    }
+    pre{
+        background:var(--code);
+        color:var(--codeText);
+        padding:18px;
+        border-radius:10px;
+        overflow:auto;
+        line-height:1.5;
+        font-size:.94rem;
+    }
+    code{
+        font-family:Consolas, "Courier New", monospace;
+    }
+    .callout{
+        background:#eef6ff;
+        border-left:5px solid #3b6f9f;
+        padding:16px 18px;
+        border-radius:8px;
+        margin:16px 0;
+    }
+    ul,ol{padding-left:24px}
+    .flow{
+        background:#0f172a;
+        color:#e5e7eb;
+        padding:22px;
+        border-radius:12px;
+        font-family:Consolas, "Courier New", monospace;
+        white-space:pre-wrap;
+        overflow:auto;
+    }
+    .small{color:var(--muted);font-size:.94rem}
+    footer{
+        text-align:center;
+        color:var(--muted);
+        padding:20px;
+        font-size:.9rem;
+    }
+    @media print{
+        .hero{padding:32px 20px}
+        section{box-shadow:none;break-inside:avoid}
+        body{background:#fff}
+    }
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-inner">
+        <h1>Evaluating Human and Artificial Intelligence Detection of Traditional and AI-Enhanced Social Engineering Attacks</h1>
+        <div class="subtitle">
+            Recommended implementation plan for a master's-level cybersecurity research project, including research design, environment setup, data generation, participant evaluation, AI detection, and statistical analysis.
+        </div>
+    </div>
+</header>
+
+<main>
+
+<section>
+<h2>1. Research Goal</h2>
+<p>
+This project investigates how effectively human participants and artificial intelligence systems can identify social-engineering messages, particularly when phishing messages have been generated or improved using large language models.
+</p>
+<p>
+The core research question is whether traditional phishing indicators—such as poor grammar, awkward wording, or unusual message structure—remain reliable when attackers can use modern LLMs to produce more professional and convincing messages.
+</p>
+<div class="callout">
+<strong>Recommended study design:</strong> Compare human and AI detection performance across three message categories: legitimate messages, traditional phishing messages, and AI-enhanced phishing messages.
+</div>
+</section>
+
+<section>
+<h2>2. Research Questions and Hypotheses</h2>
+<ul>
+<li><strong>RQ1:</strong> How accurately can humans identify AI-enhanced phishing emails?</li>
+<li><strong>RQ2:</strong> How accurately can an AI-based detector identify the same phishing emails?</li>
+<li><strong>RQ3:</strong> Is there a statistically significant difference between human and AI detection accuracy?</li>
+<li><strong>RQ4:</strong> Which message characteristics influence human decisions?</li>
+<li><strong>RQ5:</strong> Which message characteristics influence AI decisions?</li>
+<li><strong>RQ6:</strong> Do traditional phishing indicators such as grammar errors become less useful when messages are improved by LLMs?</li>
+</ul>
+
+<h3>Example Hypothesis</h3>
+<p>
+AI-enhanced phishing messages will be more difficult for human participants to identify than traditional phishing messages because AI reduces obvious linguistic indicators such as poor grammar, spelling mistakes, and awkward sentence structure.
+</p>
+
+<table>
+<thead>
+<tr><th>Category</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>Legitimate</td><td>Normal benign emails or simulated legitimate messages.</td></tr>
+<tr><td>Traditional Phishing</td><td>Phishing-style messages containing common traditional warning signs.</td></tr>
+<tr><td>AI-Enhanced Phishing</td><td>Phishing messages generated or rewritten by an LLM to appear more professional and convincing.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>3. Safe Research Environment</h2>
+<p>
+The experiment should be conducted in an isolated research environment. All messages should be synthetic and should use fake organizations, fake identities, and nonfunctional links. No simulated phishing message should be sent to real users outside the approved study environment.
+</p>
+
+<div class="flow">                    ┌────────────────────┐
+                    │ Local LLM          │
+                    │ Message Generator  │
+                    └─────────┬──────────┘
+                              │
+                              ▼
+                     Synthetic Dataset
+                  Legitimate / Traditional /
+                     AI-Enhanced Phishing
+                              │
+                ┌─────────────┴──────────────┐
+                │                            │
+                ▼                            ▼
+       ┌─────────────────┐          ┌─────────────────┐
+       │ Human Evaluation│          │ AI Detection    │
+       │ Survey          │          │ Model           │
+       └────────┬────────┘          └────────┬────────┘
+                │                            │
+                └─────────────┬──────────────┘
+                              ▼
+                      Results Database
+                              │
+                              ▼
+                    Statistical Analysis</div>
+</section>
+
+<section>
+<h2>4. Recommended Hardware and Software</h2>
+
+<h3>Hardware</h3>
+<pre><code>CPU:      Modern Intel or AMD processor
+RAM:      16 GB minimum
+          32 GB preferred
+
+Storage:  20–50 GB free space
+
+GPU:      Optional
+          NVIDIA GPU with 8+ GB VRAM is helpful</code></pre>
+
+<h3>Software</h3>
+<pre><code>Windows / Linux / macOS
+
+Python 3.11+
+VS Code
+Ollama
+Jupyter Notebook
+Git</code></pre>
+
+<p>Possible local models include Llama, Mistral, Gemma, or Qwen. The student should document the exact model, version, size, temperature, prompt, and generation settings used.</p>
+</section>
+
+<section>
+<h2>5. Python Environment Setup</h2>
+
+<h3>Create a Virtual Environment</h3>
+<pre><code>python -m venv venv</code></pre>
+
+<h3>Activate on Windows</h3>
+<pre><code>venv\Scripts\activate</code></pre>
+
+<h3>Activate on Linux or macOS</h3>
+<pre><code>source venv/bin/activate</code></pre>
+
+<h3>Install Core Packages</h3>
+<pre><code>pip install pandas numpy scipy scikit-learn matplotlib jupyter</code></pre>
+
+<h3>Optional Packages for Transformer Models</h3>
+<pre><code>pip install transformers torch sentence-transformers</code></pre>
+</section>
+
+<section>
+<h2>6. Recommended Project Directory</h2>
+<pre><code>ai-social-engineering-study/
+
+├── data/
+│   ├── legitimate/
+│   ├── traditional_phishing/
+│   ├── ai_phishing/
+│   └── processed/
+│
+├── generation/
+│   ├── prompts/
+│   └── generate_messages.py
+│
+├── detector/
+│   ├── train_detector.py
+│   ├── evaluate_detector.py
+│   └── models/
+│
+├── survey/
+│   ├── messages.csv
+│   └── survey_questions.md
+│
+├── analysis/
+│   ├── statistical_analysis.ipynb
+│   └── visualization.ipynb
+│
+├── results/
+│
+├── requirements.txt
+└── README.md</code></pre>
+</section>
+
+<section>
+<h2>7. Build the Experimental Dataset</h2>
+<p>A practical starting dataset might contain:</p>
+
+<pre><code>60 legitimate messages
+60 traditional phishing messages
+60 AI-enhanced phishing messages
+
+Total = 180 messages</code></pre>
+
+<p>
+Each participant does not need to evaluate all 180 messages. A randomized subset reduces fatigue.
+</p>
+
+<pre><code>10 legitimate
+10 traditional phishing
+10 AI-enhanced phishing
+
+Total per participant = 30 messages</code></pre>
+
+<p>Every message should receive an anonymous identifier such as E001, E002, and E003.</p>
+
+<pre><code>message_id,type,subject,body,scenario
+E001,legitimate,Account Update,...,account
+E002,traditional_phishing,Password Warning,...,credential
+E003,ai_phishing,Security Notification,...,credential</code></pre>
+</section>
+
+<section>
+<h2>8. Control the Social-Engineering Scenarios</h2>
+<p>
+The student should avoid generating completely random messages because that introduces too many uncontrolled variables. Instead, use a defined set of scenarios.
+</p>
+
+<ul>
+<li>Password reset</li>
+<li>Account verification</li>
+<li>Package delivery</li>
+<li>Payroll update</li>
+<li>University IT notification</li>
+<li>Cloud storage sharing</li>
+<li>Meeting invitation</li>
+<li>Invoice notification</li>
+<li>Security alert</li>
+</ul>
+
+<p>For each scenario, create comparable versions:</p>
+
+<pre><code>Scenario: Password Reset
+
+Version A: Traditional phishing
+Version B: AI-enhanced phishing
+Version C: Legitimate control</code></pre>
+</section>
+
+<section>
+<h2>9. Generate AI-Enhanced Messages</h2>
+<p>
+The local LLM should be used to improve linguistic quality rather than to produce operational attack infrastructure. The research focus is on how language quality affects detection.
+</p>
+
+<p>Possible controlled changes include:</p>
+<ul>
+<li>Improve clarity</li>
+<li>Correct grammar</li>
+<li>Improve sentence structure</li>
+<li>Use a professional tone</li>
+<li>Remove obvious spelling mistakes</li>
+</ul>
+
+<p>The student should save the original message, AI-enhanced version, prompt, model, generation settings, and timestamp.</p>
+
+<pre><code>{
+  "message_id": "E043",
+  "category": "ai_phishing",
+  "model": "local-model-name",
+  "temperature": 0.7,
+  "source_message": "P043",
+  "scenario": "password_reset"
+}</code></pre>
+</section>
+
+<section>
+<h2>10. Human Participant Experiment</h2>
+<p>
+Because this portion involves human participants, the student should obtain appropriate IRB approval or an institutional human-subjects determination before collecting participant data.
+</p>
+
+<h3>Recommended Participant Question</h3>
+<p><strong>Is this email legitimate or potentially malicious?</strong></p>
+
+<pre><code>Definitely legitimate
+Probably legitimate
+Unsure
+Probably phishing
+Definitely phishing</code></pre>
+
+<p>A five-point scale is preferable because it captures both classification and degree of certainty.</p>
+
+<h3>Indicators Influencing the Decision</h3>
+<ul>
+<li>Grammar</li>
+<li>Spelling</li>
+<li>Sender information</li>
+<li>Urgency</li>
+<li>Message tone</li>
+<li>Link</li>
+<li>Request for personal information</li>
+<li>Unexpected message</li>
+<li>Formatting</li>
+<li>Professional appearance</li>
+<li>Other</li>
+</ul>
+
+<h3>Confidence</h3>
+<pre><code>1 = Not confident
+2
+3
+4
+5 = Very confident</code></pre>
+</section>
+
+<section>
+<h2>11. Randomize the Experiment</h2>
+<p>
+Message order should be randomized for every participant so participants cannot easily recognize patterns.
+</p>
+
+<pre><code>Participant 001:
+E043
+E117
+E008
+E095
+E021
+...
+
+Participant 002:
+E082
+E014
+E141
+E002
+...</code></pre>
+</section>
+
+<section>
+<h2>12. Build the AI Detection System</h2>
+
+<h3>Approach A: LLM-Based Classification</h3>
+<p>The model can be asked to classify each message as:</p>
+
+<pre><code>LEGITIMATE
+
+or
+
+PHISHING</code></pre>
+
+<p>The system can also record indicators such as:</p>
+
+<pre><code>Urgency
+Credential request
+Suspicious sender
+Suspicious link
+Financial request
+Unusual wording</code></pre>
+
+<h3>Approach B: Traditional Machine Learning</h3>
+<p>A second detector can strengthen the project by using a conventional classifier such as:</p>
+
+<pre><code>TF-IDF
++
+Logistic Regression</code></pre>
+
+<p>or:</p>
+
+<pre><code>Sentence Embeddings
++
+Random Forest / Logistic Regression</code></pre>
+
+<div class="callout">
+A stronger master's-level comparison would be: <strong>Humans vs. Traditional ML Detector vs. LLM Detector</strong>.
+</div>
+</section>
+
+<section>
+<h2>13. Store the Results</h2>
+
+<h3>Human Results</h3>
+<pre><code>participant_id,message_id,response,confidence,grammar,urgency,sender,link
+P001,E043,phishing,4,0,1,1,1
+P001,E017,legitimate,5,0,0,0,0</code></pre>
+
+<h3>AI Results</h3>
+<pre><code>message_id,true_class,predicted_class,confidence
+E043,ai_phishing,phishing,0.87
+E017,legitimate,legitimate,0.94</code></pre>
+</section>
+
+<section>
+<h2>14. Evaluate Detection Performance</h2>
+<p>At minimum, calculate:</p>
+
+<ul>
+<li>Accuracy</li>
+<li>Precision</li>
+<li>Recall</li>
+<li>F1 score</li>
+<li>False positive rate</li>
+<li>False negative rate</li>
+</ul>
+
+<h3>Confusion Matrix</h3>
+<pre><code>                         Actual
+
+                    Phishing   Legitimate
+
+Predicted
+Phishing               TP          FP
+
+Legitimate              FN          TN</code></pre>
+
+<p>
+The false-negative rate may be especially important because it measures how often a phishing message is incorrectly judged to be legitimate.
+</p>
+</section>
+
+<section>
+<h2>15. Compare Traditional and AI-Enhanced Phishing</h2>
+
+<table>
+<thead>
+<tr>
+<th>Detector</th>
+<th>Traditional Phishing</th>
+<th>AI-Enhanced Phishing</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Humans</td><td>Example: 82%</td><td>Example: 61%</td></tr>
+<tr><td>ML Detector</td><td>Example: 88%</td><td>Example: 77%</td></tr>
+<tr><td>LLM Detector</td><td>Example: 91%</td><td>Example: 84%</td></tr>
+</tbody>
+</table>
+
+<p class="small">
+The numbers above are examples only. The student would replace them with experimental results.
+</p>
+
+<p>Possible statistical methods include:</p>
+
+<pre><code>Chi-square tests
+McNemar's test
+Logistic regression
+Repeated-measures analysis</code></pre>
+</section>
+
+<section>
+<h2>16. Analyze the Indicators Humans and AI Use</h2>
+<p>
+One of the strongest potential contributions of the project is identifying whether humans and AI rely on different warning signs.
+</p>
+
+<pre><code>Example Human Indicators
+
+Grammar          42%
+Urgency          67%
+Suspicious link  79%
+Sender address   61%
+Tone             33%</code></pre>
+
+<p>The study may identify patterns such as:</p>
+
+<pre><code>Humans:
+Rely heavily on grammar, appearance, and familiar visual cues.
+
+AI:
+Relies more heavily on semantic intent, credential requests,
+urgency, suspicious context, or inconsistencies.</code></pre>
+</section>
+
+<section>
+<h2>17. Analyze Confidence Versus Correctness</h2>
+<p>
+The student should also examine whether participants are highly confident when they make incorrect judgments.
+</p>
+
+<pre><code>AI-Enhanced Phishing
+
+Correct + high confidence       35%
+Correct + low confidence        25%
+Incorrect + low confidence      15%
+Incorrect + high confidence     25%</code></pre>
+
+<p>
+The final category is especially important because users who confidently misclassify phishing messages as legitimate may represent a greater organizational security risk.
+</p>
+</section>
+
+<section>
+<h2>18. Complete Experimental Pipeline</h2>
+
+<div class="flow">Define research questions
+        ↓
+Design social-engineering scenarios
+        ↓
+Create legitimate control messages
+        ↓
+Create traditional phishing messages
+        ↓
+Use local LLM to create AI-enhanced versions
+        ↓
+Validate and label dataset
+        ↓
+IRB / human-subject approval
+        ↓
+Randomized human experiment
+        ↓
+AI detector evaluation
+        ↓
+Collect human + AI predictions
+        ↓
+Calculate performance metrics
+        ↓
+Analyze message indicators
+        ↓
+Statistical comparison
+        ↓
+Identify differences between
+human and AI detection
+        ↓
+Develop cybersecurity-training recommendations</div>
+</section>
+
+<section>
+<h2>19. Recommended Research Positioning</h2>
+<p>
+A stronger version of the project is to frame it not simply as <em>Humans vs. AI</em>, but as:
+</p>
+
+<div class="callout">
+<strong>Humans vs. AI across traditional and AI-enhanced social-engineering messages.</strong>
+</div>
+
+<p>
+This creates a clearer experimental variable: the method used to create or improve the phishing message. It also makes the project better suited for statistical comparison and provides a stronger basis for developing practical cybersecurity-awareness recommendations.
+</p>
+</section>
+
+</main>
+
+<footer>
+Prepared as a research implementation guide for a master's-level cybersecurity project.
+</footer>
+
+</body>
+</html>
