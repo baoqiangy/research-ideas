@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design and Evaluation of a Python-Based Cybersecurity Monitoring Framework Using Network Traffic and Host Telemetry</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #5f6b7a;
+      --line: #dbe2ea;
+      --accent: #1f4b7a;
+      --accent-soft: #eaf2f8;
+      --code: #0f172a;
+      --code-text: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 24px 72px;
+    }
+    header {
+      background: linear-gradient(135deg, #17324d, #1f4b7a);
+      color: white;
+      padding: 38px;
+      border-radius: 18px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    header h1 { margin: 0 0 10px; font-size: 2.1rem; }
+    header p { margin: 0; color: #dbeafe; max-width: 850px; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 26px;
+      margin: 20px 0;
+      box-shadow: 0 4px 16px rgba(15,23,42,0.04);
+    }
+    h2 { color: var(--accent); margin-top: 0; }
+    h3 { margin-top: 26px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      overflow-x: auto;
+      display: block;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      white-space: normal;
+    }
+    th { background: var(--accent-soft); }
+    pre {
+      background: var(--code);
+      color: var(--code-text);
+      border: 1px solid #334155;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+    }
+    code {
+      font-family: Consolas, Monaco, monospace;
+    }
+    .note {
+      background: #fff7ed;
+      border-left: 4px solid #ea580c;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .tip {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .flow {
+      background: #f8fafc;
+      border: 1px dashed #94a3b8;
+    }
+
+    .diagram {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 22px 0;
+      overflow-x: auto;
+    }
+    .network-title { text-align:center; font-weight:700; font-size:1.15rem; margin-bottom:18px; color:#0f172a; }
+    .network-grid {
+      display:grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap:18px;
+      align-items:center;
+      min-width:720px;
+    }
+    .node {
+      border: 3px solid #1f4b7a;
+      border-radius: 12px;
+      padding: 16px;
+      text-align:center;
+      background:#eff6ff;
+      font-weight:700;
+      color:#0f172a;
+      box-shadow:0 3px 8px rgba(15,23,42,.08);
+    }
+    .node small { display:block; font-weight:400; margin-top:5px; color:#334155; }
+    .lan {
+      grid-column:1 / -1;
+      border:3px solid #475569;
+      background:#f8fafc;
+      border-radius:10px;
+      padding:12px;
+      text-align:center;
+      font-weight:700;
+      position:relative;
+    }
+    .connector { text-align:center; font-size:28px; line-height:1; color:#475569; font-weight:700; }
+    .span3 { grid-column:1 / -1; }
+    .pipeline {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      min-width:780px;
+    }
+    .step {
+      border:2px solid #1f4b7a;
+      border-radius:10px;
+      background:#f8fafc;
+      padding:12px 14px;
+      min-width:135px;
+      text-align:center;
+      font-weight:700;
+    }
+    .arrow { font-size:26px; color:#475569; font-weight:700; }
+
+    .original-diagram {
+      background: #ffffff;
+      color: #000000;
+      border: 2px solid #64748b;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.35;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(15,23,42,.06);
+      overflow-x: auto;
+    }
+    .original-diagram code {
+      color: #000000;
+      background: transparent;
+      font-family: Consolas, "Courier New", monospace;
+      font-weight: 600;
+    }
+    @media (max-width: 760px) {
+      .diagram { padding:14px; }
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 36px;
+      font-size: 0.9rem;
+    }
+    @media print {
+      body { background: white; }
+      header, section { box-shadow: none; }
+      .container { max-width: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Design and Evaluation of a Python-Based Cybersecurity Monitoring Framework Using Network Traffic and Host Telemetry</h1>
+      <p>A practical blueprint for building an isolated cybersecurity testbed, generating controlled benign and malicious activity, collecting network and host telemetry, and preparing reproducible datasets for Python-based research.</p>
+    </header>
+
+    <section>
+      <h2>Recommended Overall Approach</h2>
+      <p>For a master's project, the environment should support a clear research question, a controlled experimental setup, reproducible data collection, and measurable evaluation. A practical design is a small isolated virtual network containing an attack machine, one or more targets, and a dedicated sensor/analysis machine.</p>
+      <pre class="original-diagram" aria-label="Cybersecurity lab network topology"><code>                    Isolated Virtual Network
+                    192.168.50.0/24
+
+     ┌──────────────┐
+     │ Kali Linux   │
+     │ Attack Host  │
+     │ 192.168.50.10│
+     └──────┬───────┘
+            │
+            │
+     ┌──────▼─────────────────────────┐
+     │       Virtual LAN              │
+     └──────┬───────────────┬────────┘
+            │               │
+   ┌────────▼──────┐   ┌────▼───────────┐
+   │ Ubuntu Server │   │ Windows 11     │
+   │ Web/SSH       │   │ Target/Client  │
+   │ .20           │   │ .30            │
+   └────────┬──────┘   └──────┬─────────┘
+            │                 │
+            └────────┬────────┘
+                     │
+             ┌───────▼─────────┐
+             │ Sensor / Python │
+             │ Ubuntu          │
+             │ .40             │
+             └─────────────────┘</code></pre>
+    </section>
+
+    <section>
+      <h2>1. Build the Lab</h2>
+      <p>Use VirtualBox, VMware Workstation, or Proxmox. For most student projects, VirtualBox or VMware is sufficient.</p>
+      <table>
+        <thead><tr><th>VM</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Kali Linux</td><td>Generate controlled attack traffic</td></tr>
+          <tr><td>Ubuntu Server</td><td>Linux target, SSH, Apache/Nginx</td></tr>
+          <tr><td>Windows 11</td><td>Windows endpoint and authentication data</td></tr>
+          <tr><td>Ubuntu Sensor</td><td>Packet capture, log collection, Python analysis</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><strong>Important:</strong> Keep the attack network isolated from the university, corporate, or home production network. Only test systems owned by the student inside the lab.</div>
+      <pre><code>192.168.50.10    Kali
+192.168.50.20    Ubuntu target
+192.168.50.30    Windows target
+192.168.50.40    Sensor</code></pre>
+    </section>
+
+    <section>
+      <h2>2. Set Up the Python Environment</h2>
+      <p>On the Ubuntu sensor VM:</p>
+      <pre><code>sudo apt update
+sudo apt install python3 python3-pip python3-venv git tcpdump</code></pre>
+      <p>Create a dedicated virtual environment:</p>
+      <pre><code>python3 -m venv cyber-project
+source cyber-project/bin/activate</code></pre>
+      <p>Install useful analysis packages:</p>
+      <pre><code>pip install pandas numpy matplotlib scikit-learn
+pip install scapy
+pip install pyshark
+pip install jupyterlab</code></pre>
+      <p>For machine-learning projects:</p>
+      <pre><code>pip install xgboost shap</code></pre>
+      <p>Record dependencies for reproducibility:</p>
+      <pre><code>pip freeze &gt; requirements.txt</code></pre>
+      <h3>Suggested Project Directory</h3>
+      <pre><code>cyber-project/
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── labels/
+│
+├── notebooks/
+│
+├── src/
+│   ├── collection/
+│   ├── preprocessing/
+│   ├── features/
+│   ├── detection/
+│   └── evaluation/
+│
+├── results/
+│   ├── figures/
+│   └── tables/
+│
+├── requirements.txt
+└── README.md</code></pre>
+    </section>
+
+    <section>
+      <h2>3. Collect Network Data</h2>
+      <p>One of the easiest approaches is PCAP collection. On the sensor:</p>
+      <pre><code>sudo tcpdump -i eth0 -w data/raw/session01.pcap</code></pre>
+      <p>The student can rotate files by size or time instead of creating one very large capture.</p>
+      <p>Python can later read packet captures using Scapy:</p>
+      <pre><code>from scapy.all import rdpcap
+
+packets = rdpcap("data/raw/session01.pcap")
+
+print("Packets:", len(packets))
+
+for packet in packets[:10]:
+    print(packet.summary())</code></pre>
+      <p>PyShark can also be used when Wireshark-style protocol parsing is useful.</p>
+    </section>
+
+    <section>
+      <h2>4. Collect Host Data</h2>
+      <p>A stronger master's project collects host logs in addition to packets.</p>
+      <h3>Linux Sources</h3>
+      <pre><code>/var/log/auth.log
+/var/log/syslog
+/var/log/apache2/access.log
+/var/log/apache2/error.log</code></pre>
+      <p>These can provide events such as successful and failed SSH authentication, sudo activity, HTTP requests, response codes, and system events.</p>
+      <h3>Windows Sources</h3>
+      <pre><code>Windows Security Event Log
+PowerShell logs
+System logs
+Application logs</code></pre>
+      <p>For richer endpoint telemetry, install Sysmon. It can provide process creation, network connections, file creation, registry modification, and DNS-query events.</p>
+    </section>
+
+    <section>
+      <h2>5. Generate Normal Activity First</h2>
+      <p>Before generating attacks, collect a baseline of normal behavior over several sessions.</p>
+      <pre><code>web browsing
+SSH login
+file downloads
+file transfers
+DNS queries
+Windows login/logout
+software execution
+HTTP requests
+Git operations
+system updates</code></pre>
+      <table>
+        <thead><tr><th>Time</th><th>Activity</th><th>Label</th></tr></thead>
+        <tbody>
+          <tr><td>10:00–10:20</td><td>Normal web browsing</td><td>benign</td></tr>
+          <tr><td>10:20–10:30</td><td>SSH administration</td><td>benign</td></tr>
+          <tr><td>10:30–10:40</td><td>File transfer</td><td>benign</td></tr>
+        </tbody>
+      </table>
+      <p>This becomes the benign class used during analysis and evaluation.</p>
+    </section>
+
+    <section>
+      <h2>6. Generate Controlled Malicious Activity</h2>
+      <p>Run only controlled experiments from Kali against the isolated lab targets. Appropriate academic examples include:</p>
+      <pre><code>Port scanning
+SSH password-guessing simulation
+Web directory enumeration
+Repeated failed authentication
+SQL injection against an intentionally vulnerable web application
+Suspicious PowerShell execution
+Abnormal file-access behavior
+Reconnaissance</code></pre>
+      <p>For web experiments, use an intentionally vulnerable application such as OWASP Juice Shop instead of testing real websites.</p>
+      <p>Record each experiment in a ground-truth log:</p>
+      <table>
+        <thead><tr><th>Experiment</th><th>Start</th><th>End</th><th>Source</th><th>Target</th><th>Activity</th><th>Label</th></tr></thead>
+        <tbody>
+          <tr><td>E01</td><td>14:00</td><td>14:10</td><td>Kali</td><td>Ubuntu</td><td>Port scan</td><td>Scan</td></tr>
+          <tr><td>E02</td><td>14:15</td><td>14:25</td><td>Kali</td><td>Ubuntu</td><td>SSH failures</td><td>Brute force</td></tr>
+          <tr><td>E03</td><td>14:30</td><td>14:45</td><td>Kali</td><td>Web server</td><td>SQLi test</td><td>Web attack</td></tr>
+        </tbody>
+      </table>
+      <div class="tip"><strong>Why this matters:</strong> The experiment log becomes the ground truth used to label events and measure detection quality.</div>
+    </section>
+
+    <section>
+      <h2>7. Convert Packets into ML-Friendly Data</h2>
+      <p>Most machine-learning cybersecurity projects should not train directly from raw PCAP bytes. Convert traffic into flows and extract features such as:</p>
+      <pre><code>source_ip
+destination_ip
+source_port
+destination_port
+protocol
+packet_count
+byte_count
+flow_duration
+average_packet_size
+SYN_count
+RST_count
+connection_rate
+inter_arrival_time</code></pre>
+      <table>
+        <thead><tr><th>Duration</th><th>Packets</th><th>Bytes</th><th>SYN</th><th>Destination Port</th><th>Label</th></tr></thead>
+        <tbody>
+          <tr><td>4.2</td><td>18</td><td>12450</td><td>1</td><td>443</td><td>Benign</td></tr>
+          <tr><td>0.06</td><td>2</td><td>120</td><td>1</td><td>22</td><td>Scan</td></tr>
+          <tr><td>12.7</td><td>87</td><td>7438</td><td>34</td><td>22</td><td>BruteForce</td></tr>
+        </tbody>
+      </table>
+      <p>Python/pandas can then be used for analysis:</p>
+      <pre><code>import pandas as pd
+
+df = pd.read_csv("data/processed/network_flows.csv")
+
+print(df.head())
+print(df["label"].value_counts())</code></pre>
+    </section>
+
+    <section>
+      <h2>8. Use Both Lab-Generated and Public Data</h2>
+      <p>For a stronger master's project, use both controlled lab-generated data and a recognized public cybersecurity dataset.</p>
+      <pre><code>Dataset A → controlled lab-generated data
+Dataset B → recognized public cybersecurity dataset</code></pre>
+      <p>Depending on the research question, examples include CICIDS-style intrusion datasets, UNSW-NB15, or IoT/network-security datasets.</p>
+      <p>This allows cross-dataset validation:</p>
+      <pre><code>Train(public) → Test(lab)
+
+Train(lab) → Test(public)</code></pre>
+      <p>This helps determine whether the method generalizes beyond the student's own testbed.</p>
+    </section>
+
+    <section>
+      <h2>9. Design the Collection Plan Before Collecting Data</h2>
+      <p>The student should create a variable-and-source matrix before beginning experiments.</p>
+      <table>
+        <thead><tr><th>Research Variable</th><th>Data Source</th><th>Feature</th><th>Collection Method</th></tr></thead>
+        <tbody>
+          <tr><td>Connection behavior</td><td>PCAP</td><td>packets/sec</td><td>tcpdump</td></tr>
+          <tr><td>Authentication</td><td>Linux log</td><td>failed logins</td><td>auth.log</td></tr>
+          <tr><td>Process behavior</td><td>Windows</td><td>process creation</td><td>Sysmon</td></tr>
+          <tr><td>Web activity</td><td>Apache</td><td>HTTP status/path</td><td>access.log</td></tr>
+          <tr><td>Ground truth</td><td>Experiment record</td><td>attack type</td><td>manual experiment log</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Master's-Level Experimental Pipeline</h2>
+      <pre class="original-diagram" aria-label="Master's project data pipeline"><code>              NORMAL ACTIVITY
+                     │
+                     ▼
+              ┌─────────────┐
+              │ Lab Network │
+              └──────┬──────┘
+                     │
+     CONTROLLED      │
+       ATTACKS ──────┤
+                     │
+          ┌──────────┴──────────┐
+          ▼                     ▼
+       PCAPs                Host Logs
+          │                     │
+          └──────────┬──────────┘
+                     ▼
+              Python Collector
+                     │
+                     ▼
+              Data Cleaning
+                     │
+                     ▼
+             Feature Extraction
+                     │
+                     ▼
+                Labeling
+                     │
+                     ▼
+               Dataset.csv
+                     │
+            ┌────────┴────────┐
+            ▼                 ▼
+       Detection Model     Baseline
+            │                 │
+            └────────┬────────┘
+                     ▼
+              Evaluation
+                     │
+                     ▼
+       Precision / Recall / F1
+       False Positive Rate
+       Detection Latency</code></pre>
+      <p>The most important distinction at master's level is that data collection itself should be treated as part of the research methodology. The thesis should document exactly what generated each event, when it occurred, how it was captured, how it was labeled, which features were extracted, and how leakage between training and testing data was prevented.</p>
+    </section>
+
+    <footer>
+      Master's Cybersecurity Project Environment and Data Collection Guide
+    </footer>
+  </div>
+</body>
+</html>
