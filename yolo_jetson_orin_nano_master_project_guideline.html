@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Evaluating the Accuracy, Latency, and Energy-Efficiency Trade-offs of YOLO Deployment on the NVIDIA Jetson Orin Nano</title>
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --text:#1d2733;
+    --muted:#5c6978;
+    --accent:#1f5f99;
+    --accent2:#eaf3fb;
+    --border:#d7e1ea;
+    --code:#111827;
+    --codeText:#f3f4f6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  header{
+    background:linear-gradient(135deg,#173d63,#266fa8);
+    color:white;
+    padding:48px 24px;
+  }
+  header .wrap, main{
+    max-width:1100px;
+    margin:auto;
+  }
+  h1{font-size:2.2rem;line-height:1.2;margin:0 0 12px}
+  header p{max-width:900px;margin:0;font-size:1.08rem;color:#eaf4ff}
+  main{padding:28px 18px 60px}
+  section{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:26px;
+    margin:18px 0;
+    box-shadow:0 4px 14px rgba(20,40,70,.05);
+  }
+  h2{color:#173d63;margin-top:0}
+  h3{color:#245b88;margin-top:24px}
+  .callout{
+    background:var(--accent2);
+    border-left:5px solid var(--accent);
+    padding:16px 18px;
+    border-radius:8px;
+    margin:16px 0;
+  }
+  .warning{
+    background:#fff8e7;
+    border-left-color:#d99a13;
+  }
+  code, pre{font-family:Consolas, Monaco, monospace}
+  pre{
+    background:var(--code);
+    color:var(--codeText);
+    padding:16px;
+    border-radius:10px;
+    overflow:auto;
+    line-height:1.45;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:16px 0;
+    font-size:.96rem;
+  }
+  th,td{
+    border:1px solid var(--border);
+    padding:10px 12px;
+    vertical-align:top;
+  }
+  th{
+    background:#eef4f9;
+    color:#173d63;
+    text-align:left;
+  }
+  ul,ol{padding-left:24px}
+  .pipeline{
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+    overflow:auto;
+  }
+  .small{color:var(--muted);font-size:.93rem}
+  footer{
+    text-align:center;
+    color:var(--muted);
+    padding:18px;
+    font-size:.9rem;
+  }
+  @media print{
+    body{background:white}
+    header{padding:28px 20px}
+    section{box-shadow:none;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Evaluating the Accuracy, Latency, and Energy-Efficiency Trade-offs of YOLO Deployment on the NVIDIA Jetson Orin Nano</h1>
+    <p>Master's Project Research Guideline</p>
+  </div>
+</header>
+
+<main>
+<section>
+  <h2>1. Project Focus</h2>
+  <p>Your original idea is strong, but it should be narrowed into a controlled edge-AI benchmarking project. Rather than studying the broad problem of “accuracy versus efficiency in computer vision,” you will compare a small number of YOLO deployment configurations on one NVIDIA Jetson Orin Nano and evaluate them using a clearly defined real-world scenario.</p>
+
+  <div class="callout">
+    <strong>Main research question:</strong><br>
+    How do model size and TensorRT optimization affect the accuracy, inference speed, and energy efficiency of YOLO object detection on an NVIDIA Jetson Orin Nano?
+  </div>
+
+  <p>Supporting questions:</p>
+  <ol>
+    <li>How does YOLO model size affect detection accuracy and inference latency on the Jetson Orin Nano?</li>
+    <li>How much performance improvement does TensorRT FP16 optimization provide compared with the original PyTorch model?</li>
+    <li>What trade-off exists among detection accuracy, inference speed, and power consumption for real-time edge deployment?</li>
+  </ol>
+</section>
+
+<section>
+  <h2>2. Experimental Scope</h2>
+  <p>Use only two YOLO model sizes and two deployment configurations. Stay within one YOLO model family so that model generation does not become another variable.</p>
+
+  <table>
+    <tr><th>Configuration</th><th>Model Size</th><th>Runtime / Precision</th></tr>
+    <tr><td>A</td><td>YOLO Nano</td><td>PyTorch FP32</td></tr>
+    <tr><td>B</td><td>YOLO Nano</td><td>TensorRT FP16</td></tr>
+    <tr><td>C</td><td>YOLO Small</td><td>PyTorch FP32</td></tr>
+    <tr><td>D</td><td>YOLO Small</td><td>TensorRT FP16</td></tr>
+  </table>
+
+  <p>Do not make INT8 quantization part of the required core project. It may be added later as an optional extension if time permits.</p>
+</section>
+
+<section>
+  <h2>3. Variables and Metrics</h2>
+
+  <h3>Independent Variables</h3>
+  <ul>
+    <li>YOLO model size: Nano vs. Small</li>
+    <li>Deployment method: PyTorch FP32 vs. TensorRT FP16</li>
+  </ul>
+
+  <h3>Dependent Variables</h3>
+  <ul>
+    <li>mAP@0.5</li>
+    <li>mAP@0.5:0.95</li>
+    <li>Precision</li>
+    <li>Recall</li>
+    <li>Inference latency</li>
+    <li>Frames per second (FPS)</li>
+    <li>Average power consumption</li>
+    <li>Peak power consumption</li>
+    <li>Energy per inference</li>
+    <li>GPU utilization</li>
+    <li>CPU utilization</li>
+    <li>Memory utilization</li>
+    <li>Temperature</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. Select One Real-World Application</h2>
+  <p>Choose one application only. Good options include:</p>
+  <ul>
+    <li>Indoor person and common-object detection</li>
+    <li>Parking-lot vehicle detection</li>
+    <li>Pedestrian detection</li>
+    <li>Classroom occupancy detection</li>
+    <li>Laboratory equipment detection</li>
+  </ul>
+
+  <p>A simple indoor object-detection scenario is recommended because common classes such as person, chair, bottle, backpack, and laptop already exist in standard datasets.</p>
+
+  <div class="callout warning">
+    Avoid turning this into an autonomous-driving or multi-sensor project. Your application is mainly the test environment for evaluating edge inference performance.
+  </div>
+</section>
+
+<section>
+  <h2>5. Decide Whether You Need Custom Training</h2>
+  <p>Start with pretrained YOLO models. If your chosen object classes already exist in COCO, you probably do not need to train a model from scratch.</p>
+
+  <p>If you need custom classes, use transfer learning later. The main research contribution should remain deployment, optimization, and performance evaluation under embedded hardware constraints.</p>
+</section>
+
+<section>
+  <h2>6. Hardware Setup</h2>
+  <p>Recommended hardware:</p>
+  <ul>
+    <li>NVIDIA Jetson Orin Nano</li>
+    <li>MicroSD card or NVMe SSD</li>
+    <li>USB or CSI camera</li>
+    <li>Monitor and keyboard during development</li>
+    <li>Suitable Jetson power supply</li>
+  </ul>
+
+  <p>Record the exact Jetson model and hardware configuration used in your experiments.</p>
+</section>
+
+<section>
+  <h2>7. Install and Document the Software Environment</h2>
+  <p>Install a supported NVIDIA JetPack image for your board. JetPack provides the major NVIDIA components required for the project, including CUDA, cuDNN, TensorRT, and Jetson Linux.</p>
+
+  <p>Create an environment record containing:</p>
+  <pre>Jetson model:
+JetPack version:
+Ubuntu version:
+CUDA version:
+cuDNN version:
+TensorRT version:
+Python version:
+Ultralytics version:
+YOLO model version:
+Camera:
+Storage:</pre>
+
+  <p>Check the installed versions using commands such as:</p>
+  <pre>python3 --version
+
+nvcc --version
+
+python3 -c "import tensorrt; print(tensorrt.__version__)"</pre>
+</section>
+
+<section>
+  <h2>8. Organize the Project Directory</h2>
+  <pre>jetson-yolo-project/
+│
+├── models/
+├── dataset/
+│   ├── images/
+│   ├── labels/
+│   └── videos/
+├── scripts/
+├── results/
+│   ├── accuracy/
+│   ├── latency/
+│   ├── power/
+│   └── logs/
+├── notebooks/
+├── configs/
+└── README.md</pre>
+
+  <p>Save the Python package versions so the experiment can be reproduced:</p>
+  <pre>pip freeze &gt; requirements.txt</pre>
+</section>
+
+<section>
+  <h2>9. Verify Baseline YOLO Inference</h2>
+  <p>Before collecting experimental data, verify that the pipeline works correctly.</p>
+  <ol>
+    <li>Run detection on one still image.</li>
+    <li>Run detection on a prerecorded video.</li>
+    <li>Run detection using the live camera.</li>
+  </ol>
+
+  <div class="pipeline"><pre>Camera
+  ↓
+Preprocessing
+  ↓
+YOLO Model
+  ↓
+Detections
+  ↓
+Postprocessing / Output</pre></div>
+
+  <p>Do not begin formal benchmarking until this pipeline is stable.</p>
+</section>
+
+<section>
+  <h2>10. Build the Evaluation Dataset</h2>
+  <p>Use two sources of evaluation data.</p>
+
+  <h3>Dataset A — Standard Benchmark</h3>
+  <p>Use an appropriate standard validation dataset to obtain conventional accuracy measurements such as mAP, precision, and recall.</p>
+
+  <h3>Dataset B — Real-World Local Dataset</h3>
+  <p>Record images or video from the selected real-world environment. Include variation such as:</p>
+  <ul>
+    <li>Different lighting conditions</li>
+    <li>Different object distances</li>
+    <li>Different object positions</li>
+    <li>Partial occlusion</li>
+    <li>Different numbers of objects</li>
+  </ul>
+
+  <p>A practical target is approximately 500–1,000 labeled images if the purpose is evaluation rather than full model training.</p>
+</section>
+
+<section>
+  <h2>11. Label the Local Dataset</h2>
+  <p>If local detection accuracy will be measured, create ground-truth bounding boxes using a tool such as CVAT, Label Studio, Roboflow, or LabelImg.</p>
+
+  <p>Example object classes:</p>
+  <pre>person
+chair
+backpack
+bottle
+laptop</pre>
+
+  <p>Define annotation rules before labeling. For example:</p>
+
+  <div class="callout">
+    Label a person when at least 30% of the body is visible.
+  </div>
+
+  <p>Use the same annotation rules throughout the dataset.</p>
+</section>
+
+<section>
+  <h2>12. Establish the PyTorch Baseline</h2>
+  <p>Run the Nano model using standard PyTorch inference and record:</p>
+  <ul>
+    <li>mAP</li>
+    <li>Precision</li>
+    <li>Recall</li>
+    <li>Average latency</li>
+    <li>Median latency</li>
+    <li>95th-percentile latency</li>
+    <li>FPS</li>
+    <li>CPU utilization</li>
+    <li>GPU utilization</li>
+    <li>Memory utilization</li>
+    <li>Power consumption</li>
+    <li>Temperature</li>
+  </ul>
+
+  <p>Do not rely on an FPS number displayed on a demo video. Collect timing data programmatically.</p>
+</section>
+
+<section>
+  <h2>13. Export the Nano Model to TensorRT FP16</h2>
+  <p>Export the same YOLO Nano model to a TensorRT engine using FP16 precision. A typical Ultralytics workflow looks like:</p>
+
+  <pre>from ultralytics import YOLO
+
+model = YOLO("nano_model.pt")
+
+model.export(
+    format="engine",
+    half=True,
+    imgsz=640
+)</pre>
+
+  <p class="small">Verify the exact export options using the documentation for the installed Ultralytics version.</p>
+
+  <p>Build or validate the TensorRT engine on the target Jetson whenever possible.</p>
+</section>
+
+<section>
+  <h2>14. Benchmark TensorRT Nano</h2>
+  <p>Run the same evaluation data through the TensorRT FP16 Nano model.</p>
+
+  <p>Keep all other conditions fixed:</p>
+  <ul>
+    <li>Input images</li>
+    <li>Image resolution</li>
+    <li>Confidence threshold</li>
+    <li>IoU threshold</li>
+    <li>Camera</li>
+    <li>Scene</li>
+    <li>Jetson power mode</li>
+  </ul>
+
+  <p>The deployment method should be the only major change.</p>
+</section>
+
+<section>
+  <h2>15. Repeat the Experiment with YOLO Small</h2>
+  <p>Repeat exactly the same procedure with the Small model.</p>
+
+  <pre>Nano + PyTorch FP32
+Nano + TensorRT FP16
+
+Small + PyTorch FP32
+Small + TensorRT FP16</pre>
+
+  <p>This produces a clean four-configuration experiment.</p>
+</section>
+
+<section>
+  <h2>16. Measure Power and Energy</h2>
+  <p>Collect at least:</p>
+  <ul>
+    <li>Average device power</li>
+    <li>Peak device power</li>
+    <li>GPU utilization</li>
+    <li>CPU utilization</li>
+    <li>Memory utilization</li>
+    <li>GPU temperature</li>
+    <li>CPU temperature</li>
+  </ul>
+
+  <h3>Energy per Inference</h3>
+  <p>Calculate:</p>
+
+  <div class="callout">
+    <strong>E = P × t</strong><br><br>
+    E = energy per inference<br>
+    P = average power in watts<br>
+    t = inference time in seconds
+  </div>
+
+  <p>Example:</p>
+  <pre>Power = 12 W
+Inference time = 0.020 s
+
+Energy per inference
+= 12 × 0.020
+= 0.24 joules</pre>
+</section>
+
+<section>
+  <h2>17. Control the Jetson Power Mode</h2>
+  <p>For the main experiment, use one fixed Jetson power mode for all four configurations.</p>
+
+  <pre>Main Experiment
+
+Nano PyTorch
+Nano TensorRT
+Small PyTorch
+Small TensorRT
+
+All use the same power mode.</pre>
+
+  <p>If time permits, perform an optional second experiment using the best model under a low-power mode and a high-performance mode.</p>
+</section>
+
+<section>
+  <h2>18. Warm Up the Model</h2>
+  <p>Do not record benchmark results immediately after model loading. Run approximately 100–200 warm-up inferences before measurement.</p>
+
+  <p>This reduces the influence of startup costs such as CUDA initialization, memory allocation, and kernel caching.</p>
+</section>
+
+<section>
+  <h2>19. Repeat Every Benchmark</h2>
+  <p>Do not benchmark a configuration only once.</p>
+
+  <p>A reasonable procedure is:</p>
+  <pre>Warm-up = 100 frames
+
+Measured run = 1,000 frames
+
+Number of repeated runs = 5</pre>
+
+  <p>This gives approximately 5,000 measured inferences per configuration.</p>
+</section>
+
+<section>
+  <h2>20. Record Latency Distributions</h2>
+  <p>Report more than average latency. Include:</p>
+  <ul>
+    <li>Mean</li>
+    <li>Median</li>
+    <li>Standard deviation</li>
+    <li>Minimum</li>
+    <li>Maximum</li>
+    <li>P95 latency</li>
+  </ul>
+
+  <p>P95 latency is useful because a system may have a fast average but still experience occasional slow frames.</p>
+</section>
+
+<section>
+  <h2>21. Measure Both Inference FPS and End-to-End FPS</h2>
+  <p>For pure model inference:</p>
+
+  <div class="callout">
+    FPS = 1 / latency in seconds
+  </div>
+
+  <p>Example:</p>
+  <pre>Latency = 0.025 seconds
+
+FPS = 1 / 0.025
+FPS = 40</pre>
+
+  <p>Report both:</p>
+  <ul>
+    <li><strong>Model inference FPS</strong> — neural-network processing only</li>
+    <li><strong>End-to-end FPS</strong> — camera capture, preprocessing, inference, postprocessing, and output</li>
+  </ul>
+</section>
+
+<section>
+  <h2>22. Define "Real Time" Before Testing</h2>
+  <p>Create an explicit definition before conducting the experiment. For example:</p>
+
+  <div class="callout">
+    For this project, real-time performance is defined as sustained end-to-end processing of at least 30 FPS.
+  </div>
+
+  <p>Then classify each configuration objectively as meeting or not meeting the real-time requirement.</p>
+</section>
+
+<section>
+  <h2>23. Evaluate Detection Accuracy</h2>
+  <p>For each model and deployment configuration, calculate:</p>
+  <ul>
+    <li>Precision</li>
+    <li>Recall</li>
+    <li>mAP@0.5</li>
+    <li>mAP@0.5:0.95</li>
+  </ul>
+
+  <p>Evaluate these metrics on both the standard benchmark dataset and the real-world local dataset.</p>
+
+  <p>This allows you to compare standard benchmark accuracy against real-world edge deployment accuracy.</p>
+</section>
+
+<section>
+  <h2>24. Create the Main Results Table</h2>
+
+  <table>
+    <tr>
+      <th>Model</th>
+      <th>Runtime</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>mAP50-95</th>
+      <th>Latency</th>
+      <th>FPS</th>
+      <th>Power</th>
+      <th>J / Inference</th>
+    </tr>
+    <tr><td>Nano</td><td>PyTorch</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Nano</td><td>TensorRT FP16</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Small</td><td>PyTorch</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Small</td><td>TensorRT FP16</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>25. Create the Main Graphs</h2>
+  <p>Generate at least the following figures:</p>
+  <ol>
+    <li>Model configuration vs. FPS</li>
+    <li>Model configuration vs. mAP</li>
+    <li>Model configuration vs. average power</li>
+    <li>Model configuration vs. energy per inference</li>
+    <li>mAP vs. FPS</li>
+    <li>mAP vs. energy per inference</li>
+  </ol>
+
+  <p>The final two graphs are especially important because they visualize the trade-off between accuracy and efficiency.</p>
+</section>
+
+<section>
+  <h2>26. Quantify TensorRT Improvement</h2>
+
+  <h3>Speedup</h3>
+  <div class="callout">
+    Speedup = PyTorch latency / TensorRT latency
+  </div>
+
+  <p>Example:</p>
+  <pre>PyTorch latency = 40 ms
+TensorRT latency = 20 ms
+
+Speedup = 40 / 20
+Speedup = 2.0×</pre>
+
+  <p>Also report the percentage change in power and the difference in mAP between PyTorch and TensorRT.</p>
+</section>
+
+<section>
+  <h2>27. Conduct a Small Real-World Stress Test</h2>
+  <p>Use only the best-performing configuration for this secondary experiment.</p>
+
+  <p>Test conditions such as:</p>
+  <ul>
+    <li>Normal lighting</li>
+    <li>Low lighting</li>
+    <li>Long-distance objects</li>
+    <li>Partial occlusion</li>
+    <li>Multiple simultaneous objects</li>
+    <li>Motion</li>
+  </ul>
+
+  <p>A practical target is approximately 100–200 labeled images per condition.</p>
+</section>
+
+<section>
+  <h2>28. Analyze Failure Cases</h2>
+  <p>Review incorrect detections and categorize them:</p>
+  <ul>
+    <li>False positive</li>
+    <li>False negative</li>
+    <li>Localization error</li>
+    <li>Small object</li>
+    <li>Occluded object</li>
+    <li>Low light</li>
+    <li>Motion blur</li>
+    <li>Class confusion</li>
+  </ul>
+
+  <p>Include representative examples in the final report.</p>
+</section>
+
+<section>
+  <h2>29. Perform Basic Statistical Analysis</h2>
+  <p>For repeated measurements, report:</p>
+  <ul>
+    <li>Mean ± standard deviation</li>
+    <li>Median latency</li>
+    <li>P95 latency</li>
+    <li>Confidence intervals where appropriate</li>
+  </ul>
+
+  <p>If the same input frames are processed by both PyTorch and TensorRT, a paired statistical comparison may also be used. Focus on the magnitude and practical meaning of the performance differences, not only statistical significance.</p>
+</section>
+
+<section>
+  <h2>30. Experimental Pipeline</h2>
+  <div class="pipeline">
+<pre>                 Pretrained YOLO
+                       │
+               ┌───────┴───────┐
+               │               │
+             Nano            Small
+               │               │
+         ┌─────┴─────┐   ┌─────┴─────┐
+         │           │   │           │
+      PyTorch    TensorRT PyTorch  TensorRT
+        FP32       FP16    FP32      FP16
+         │           │      │          │
+         └───────────┴──────┴──────────┘
+                       │
+                 Jetson Orin Nano
+                       │
+               Same Evaluation Data
+                       │
+             ┌─────────┼─────────┐
+             │         │         │
+          Accuracy    Speed     Power
+             │         │         │
+          mAP/P/R  FPS/Latency  Watts/J
+             └─────────┼─────────┘
+                       │
+                Trade-off Analysis</pre>
+  </div>
+</section>
+
+<section>
+  <h2>31. Final Experimental Matrix</h2>
+  <table>
+    <tr><th>Experiment</th><th>Model</th><th>Runtime</th><th>Precision</th><th>Resolution</th><th>Power Mode</th></tr>
+    <tr><td>E1</td><td>Nano</td><td>PyTorch</td><td>FP32</td><td>640×640</td><td>Fixed</td></tr>
+    <tr><td>E2</td><td>Nano</td><td>TensorRT</td><td>FP16</td><td>640×640</td><td>Fixed</td></tr>
+    <tr><td>E3</td><td>Small</td><td>PyTorch</td><td>FP32</td><td>640×640</td><td>Fixed</td></tr>
+    <tr><td>E4</td><td>Small</td><td>TensorRT</td><td>FP16</td><td>640×640</td><td>Fixed</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>32. Optional Extension: INT8</h2>
+  <p>Only after the main four experiments are complete, you may compare the best FP16 configuration with an INT8 TensorRT version.</p>
+
+  <p>Measure:</p>
+  <ul>
+    <li>Accuracy loss</li>
+    <li>FPS improvement</li>
+    <li>Power change</li>
+    <li>Energy per inference</li>
+  </ul>
+
+  <p>INT8 requires a representative calibration dataset, so it should remain optional unless the core project is finished.</p>
+</section>
+
+<section>
+  <h2>33. Scope Boundaries</h2>
+  <p>To keep this project achievable, do not:</p>
+  <ul>
+    <li>Compare many different YOLO generations</li>
+    <li>Train a new YOLO architecture from scratch</li>
+    <li>Design a new object-detection architecture</li>
+    <li>Compare Jetson with Raspberry Pi, desktop GPUs, phones, and cloud platforms</li>
+    <li>Evaluate many unrelated optimization frameworks</li>
+    <li>Test multiple unrelated real-world applications</li>
+    <li>Add object tracking unless it is essential</li>
+    <li>Add DeepStream before TensorRT deployment is complete</li>
+    <li>Make INT8 mandatory</li>
+    <li>Use only a displayed FPS value as the performance evaluation</li>
+  </ul>
+</section>
+
+<section>
+  <h2>34. Suggested 15-Week Schedule</h2>
+  <table>
+    <tr><th>Weeks</th><th>Work</th></tr>
+    <tr><td>1–2</td><td>Literature review and finalize research questions</td></tr>
+    <tr><td>3</td><td>Jetson and JetPack environment setup</td></tr>
+    <tr><td>4</td><td>Baseline YOLO deployment</td></tr>
+    <tr><td>5</td><td>Select and collect real-world dataset</td></tr>
+    <tr><td>6</td><td>Annotation and dataset verification</td></tr>
+    <tr><td>7</td><td>Nano PyTorch experiments</td></tr>
+    <tr><td>8</td><td>Nano TensorRT FP16 experiments</td></tr>
+    <tr><td>9</td><td>Small PyTorch experiments</td></tr>
+    <tr><td>10</td><td>Small TensorRT FP16 experiments</td></tr>
+    <tr><td>11</td><td>Power and energy benchmarking</td></tr>
+    <tr><td>12</td><td>Real-world condition experiments</td></tr>
+    <tr><td>13</td><td>Statistical and failure analysis</td></tr>
+    <tr><td>14</td><td>Charts, tables, and discussion</td></tr>
+    <tr><td>15</td><td>Final report and presentation</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>35. Expected Deliverables</h2>
+  <ol>
+    <li>A working Jetson application performing real-time YOLO object detection</li>
+    <li>A reproducible software environment with documented versions</li>
+    <li>An evaluation dataset or documented dataset source</li>
+    <li>Benchmarking scripts for latency, FPS, power, and resource utilization</li>
+    <li>Results for the four primary experimental configurations</li>
+    <li>Accuracy results including precision, recall, mAP@0.5, and mAP@0.5:0.95</li>
+    <li>Performance results including mean, median, and P95 latency plus FPS</li>
+    <li>Energy results including average power and joules per inference</li>
+    <li>A real-world robustness evaluation</li>
+    <li>A failure-case analysis</li>
+    <li>Graphs showing accuracy, speed, and energy trade-offs</li>
+    <li>A final recommendation identifying the most appropriate YOLO configuration for the selected application</li>
+  </ol>
+</section>
+
+<section>
+  <h2>36. Recommended Project Description</h2>
+  <div class="callout">
+    This project will experimentally evaluate the trade-offs among detection accuracy, inference latency, and energy efficiency when deploying two sizes of a YOLO object detection model on an NVIDIA Jetson Orin Nano. PyTorch FP32 inference will be compared with TensorRT FP16 optimization under a controlled hardware configuration. Performance will be evaluated using both benchmark data and a small real-world application dataset. The study will measure precision, recall, mAP, latency, FPS, power consumption, and energy per inference to determine which configuration provides the most appropriate balance between accuracy and computational efficiency for real-time edge deployment.
+  </div>
+</section>
+
+<section>
+  <h2>37. Final Goal</h2>
+  <p>By the end of the project, you should be able to answer a clear engineering question:</p>
+
+  <div class="callout">
+    Which YOLO deployment configuration provides the best practical balance of detection accuracy, real-time performance, and energy efficiency on the NVIDIA Jetson Orin Nano for the selected real-world application?
+  </div>
+
+  <p>Your final report should answer this question using reproducible experimental evidence rather than anecdotal observations.</p>
+</section>
+
+</main>
+
+<footer>
+  Master's Project Research Guideline
+</footer>
+</body>
+</html>
