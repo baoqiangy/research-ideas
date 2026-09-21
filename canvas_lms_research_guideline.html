@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cybersecurity Risk Assessment of Identity, Privileged Access, and Third-Party Integrations in a Canvas LMS Environment</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#5c6b82;--navy:#163a63;--blue:#2767a8;--line:#d9e2ec;--soft:#eaf2fb;--green:#eaf7ef;--greenink:#17633a;--amber:#fff6df;--amberink:#7a5311}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.6}
+header{background:linear-gradient(125deg,#102f52,#245f97);color:#fff;padding:58px 24px 48px}
+.wrap{max-width:1100px;margin:auto}
+.kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.85}
+h1{font-size:clamp(31px,5vw,52px);line-height:1.08;margin:10px 0 14px}
+.subtitle{font-size:18px;max-width:900px;color:#e8f1fa}
+main{padding:28px 20px 60px}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;margin:20px 0;box-shadow:0 8px 25px rgba(30,55,80,.05)}
+h2{color:var(--navy);font-size:27px;margin:0 0 14px}
+h3{color:#234d76;font-size:20px;margin:22px 0 8px}
+ul,ol{padding-left:24px}.callout{border-left:5px solid var(--blue);background:var(--soft);padding:16px 18px;border-radius:8px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.mini{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fbfdff}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:10px 11px;vertical-align:top;text-align:left}
+th{background:#eef4fa;color:#183d64}
+pre{background:#15202b;color:#e8f1f8;padding:16px;border-radius:10px;overflow:auto}
+.step{display:grid;grid-template-columns:42px 1fr;gap:12px;margin:18px 0}
+.num{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.badge{display:inline-block;padding:5px 10px;border-radius:999px;font-weight:700;font-size:13px;margin-right:8px}
+.good{background:var(--green);color:var(--greenink)}.warn{background:var(--amber);color:var(--amberink)}
+.small{font-size:13px;color:var(--muted)} footer{color:var(--muted);text-align:center;padding:10px 20px 35px;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="kicker">Master's Research Plan</div>
+<h1>Cybersecurity Risk Assessment of Identity, Privileged Access, and Third-Party Integrations in a Canvas LMS Environment</h1>
+<div class="subtitle">A focused assessment of cybersecurity risks within the university's own Canvas environment, emphasizing authentication, privileged access, API/developer-key use, and LTI or other third-party integrations.</div>
+</div></header>
+<main class="wrap">
+
+<section>
+<h2>1. Feasibility Assessment</h2>
+<p><span class="badge good">Feasible</span></p>
+<p>This project is feasible because it evaluates cybersecurity risks within the university's actual Canvas environment and focuses on areas that can be examined through institutional configuration, access-management practices, integrations, documentation, and interviews with relevant IT personnel. The selected domains—identity and authentication, privileged access, API/developer-key security, and third-party/LTI integrations—are closely related and provide a focused basis for a practical risk assessment.</p>
+<div class="grid">
+<div class="mini"><h3>Why this scope works</h3><ul>
+<li>Identity and privileged access are central to LMS security.</li>
+<li>API and developer-key use can be studied through public Canvas documentation.</li>
+<li>LTI and third-party integrations introduce clear governance and data-access risks.</li>
+<li>the researcher can produce specific, evidence-based risk scenarios without penetration testing.</li>
+</ul></div>
+
+</div>
+</section>
+
+<section>
+<h2>2. Recommended Research Question</h2>
+<div class="callout"><strong>Primary research question:</strong><br>
+What are the most significant cybersecurity risks associated with identity management, privileged access, API access, and third-party integrations in an institution-managed Canvas LMS environment, and what controls can reduce those risks?</div>
+<h3>Optional supporting questions</h3>
+<ul>
+<li>Which risks are primarily controlled by the institution rather than by Instructure?</li>
+<li>Which weaknesses most directly increase the likelihood of account misuse, excessive access, or third-party data exposure?</li>
+<li>Which NIST CSF 2.0 safeguards best address the identified risks?</li>
+</ul>
+</section>
+
+<section>
+<h2>3. Define the University Canvas Environment</h2>
+<p>Because the assessment will be performed within the university's own Canvas environment, document the actual environment being evaluated rather than creating a hypothetical reference institution. Describe how Canvas is configured and managed, including SSO, MFA, administrator roles, account lifecycle processes, developer keys, OAuth/API access, LTI integrations, and other relevant institutional practices. Where complete information is not available, clearly label assumptions and identify how they were derived.</p>
+<div class="callout"><strong>Environment documentation example:</strong><br>
+Document the university's actual Canvas deployment: who authenticates through SSO, where MFA is required, which roles have administrative privileges, how privileged access is approved and reviewed, which developer keys and OAuth integrations are active, which LTI tools are enabled, and who owns or approves each integration.</div>
+<p><strong>Transparent</strong> means the report clearly distinguishes verified institutional facts, published Canvas documentation, interview evidence, and any assumptions used where direct evidence is unavailable. All likelihood, impact, and residual-risk ratings should be tied to the documented university environment.</p>
+</section>
+
+<section>
+<h2>4. Final Scope</h2>
+<h3>Domain A — Identity and Authentication</h3>
+<ul><li>SSO</li><li>MFA</li><li>Account lifecycle</li><li>Compromised credentials</li><li>Inactive or orphaned accounts</li></ul>
+<h3>Domain B — Privileged Access</h3>
+<ul><li>Canvas administrator roles</li><li>Excessive privilege</li><li>Privileged-account review</li><li>Separation of duties</li><li>Termination or role-change access removal</li></ul>
+<h3>Domain C — API and Developer-Key Security</h3>
+<ul><li>OAuth tokens</li><li>Developer keys</li><li>API scopes</li><li>Credential exposure</li><li>Over-permissioned integrations</li></ul>
+<h3>Domain D — Third-Party and LTI Integrations</h3>
+<ul><li>LTI 1.3 applications</li><li>Vendor access to LMS data</li><li>Integration approval</li><li>Third-party security review</li><li>Revocation and decommissioning</li></ul>
+</section>
+
+<section>
+<h2>5. Research Objectives</h2>
+<ol>
+<li>Identify assets directly related to identity, privileged access, API access, and third-party integrations.</li>
+<li>Develop 8–10 concrete cybersecurity risk scenarios.</li>
+<li>Identify threats, weaknesses, and relevant safeguards for each scenario.</li>
+<li>Evaluate likelihood and impact using a documented risk-scoring method.</li>
+<li>Map existing and recommended safeguards to NIST CSF 2.0.</li>
+<li>Prioritize the risks in a risk register.</li>
+<li>Develop a practical risk-treatment plan focused on institution-controlled actions.</li>
+</ol>
+</section>
+
+<section>
+<h2>6. Suggested 8–10 Risk Scenarios</h2>
+<table>
+<tr><th>ID</th><th>Risk Scenario</th></tr>
+<tr><td>R1</td><td>A Canvas administrator account is compromised and used to access or change sensitive LMS information or settings.</td></tr>
+<tr><td>R2</td><td>An administrator has more privileges than required, increasing the impact of misuse or account compromise.</td></tr>
+<tr><td>R3</td><td>A former employee or transferred staff member retains privileged Canvas access because account lifecycle controls are incomplete.</td></tr>
+<tr><td>R4</td><td>Weak or inconsistently enforced MFA increases the likelihood of unauthorized access to institutional Canvas accounts.</td></tr>
+<tr><td>R5</td><td>An over-scoped developer key allows an application to access more Canvas data or functions than necessary.</td></tr>
+<tr><td>R6</td><td>An OAuth or API token is exposed, copied, or misused by an unauthorized party.</td></tr>
+<tr><td>R7</td><td>An LTI application is granted excessive permissions or unnecessary data access.</td></tr>
+<tr><td>R8</td><td>A third-party LTI vendor is compromised, exposing institutional or user information.</td></tr>
+<tr><td>R9</td><td>A new integration is enabled without sufficient security and privacy review.</td></tr>
+<tr><td>R10</td><td>An obsolete integration or credential remains active after the application is no longer needed.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>7. Assets to Include</h2>
+<table>
+<tr><th>Asset</th><th>Why it matters</th></tr>
+<tr><td>User identities</td><td>Used to authenticate students, faculty, staff, and administrators.</td></tr>
+<tr><td>Administrator accounts</td><td>Can make high-impact configuration and access changes.</td></tr>
+<tr><td>OAuth tokens</td><td>Can authorize access to Canvas functions and data.</td></tr>
+<tr><td>Developer keys</td><td>Control application-level API access.</td></tr>
+<tr><td>LTI configurations</td><td>Define third-party tool connections and permissions.</td></tr>
+<tr><td>Integration credentials</td><td>May allow persistent access if exposed or poorly managed.</td></tr>
+<tr><td>User and course data</td><td>May be exposed through accounts, APIs, or third-party integrations.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>8. Core Methodology</h2>
+<div class="grid">
+<div class="mini"><h3>NIST SP 800-30 Rev. 1</h3><p>Use for threat identification, vulnerabilities or predisposing conditions, likelihood, impact, and risk determination.</p></div>
+<div class="mini"><h3>NIST CSF 2.0</h3><p>Use to organize institution-controlled safeguards and recommend target-state controls.</p></div>
+</div>
+<p>The project should not claim that a missing public statement proves that a control is absent. Vendor documentation, institutional assumptions, and verified evidence must remain clearly separated.</p>
+</section>
+
+<section>
+<h2>9. Tools to Use</h2>
+<table>
+<tr><th>Tool</th><th>Purpose</th></tr>
+<tr><td>Zotero</td><td>Manage scholarly papers, NIST publications, Canvas documentation, and citations.</td></tr>
+<tr><td>Excel or Google Sheets</td><td>Maintain the asset inventory, evidence matrix, scoring rubric, risk register, and control mapping.</td></tr>
+<tr><td>OWASP Threat Dragon</td><td>Create a simple architecture/data-flow model showing identity, Canvas, API clients, and third-party integrations.</td></tr>
+<tr><td>diagrams.net</td><td>Optional tool for polished architecture and trust-boundary diagrams.</td></tr>
+<tr><td>NIST CSF 2.0 resources</td><td>Map existing and recommended controls.</td></tr>
+<tr><td>Python or R</td><td>Optional use for charts, heat maps, or sensitivity analysis.</td></tr>
+<tr><td>NVivo or Taguette</td><td>Optional use if interviews are conducted and qualitative coding is needed.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>10. Step-by-Step Research Plan</h2>
+
+<div class="step"><div class="num">1</div><div><h3>Finalize scope and document the university Canvas environment</h3><p>Define the university Canvas environment, system boundary, assumptions, evidence sources, and intended audience.</p><strong>Deliverable:</strong> 1–2 page assessment charter.</div></div>
+
+<div class="step"><div class="num">2</div><div><h3>Conduct literature and documentation review</h3><p>Review Canvas security documentation, developer documentation, NIST standards, EDUCAUSE guidance, and scholarly research.</p>
+<pre>"Canvas LMS" AND security
+"LTI" AND security
+"OAuth" AND LMS
+"developer key" AND Canvas
+"higher education" AND third-party risk
+"privileged access" AND LMS</pre>
+<strong>Deliverable:</strong> evidence and literature matrix.</div></div>
+
+<div class="step"><div class="num">3</div><div><h3>Create the asset inventory</h3><p>Limit the inventory to identities, administrator accounts, tokens, developer keys, LTI configurations, integration credentials, and data reachable through those mechanisms.</p><strong>Deliverable:</strong> focused asset inventory.</div></div>
+
+<div class="step"><div class="num">4</div><div><h3>Create the architecture and trust-boundary diagram</h3><p>Model the identity provider, users, Canvas, administrators, API clients, SIS, and LTI applications. Mark trust boundaries among the institution, Instructure, end users, and third parties.</p><strong>Deliverable:</strong> one architecture/data-flow diagram.</div></div>
+
+<div class="step"><div class="num">5</div><div><h3>Develop 8–10 concrete risk scenarios</h3><p>Use a cause–event–impact format. Each scenario should identify the affected asset, threat event, weakness, and consequence.</p><strong>Deliverable:</strong> risk-scenario catalog.</div></div>
+
+<div class="step"><div class="num">6</div><div><h3>Build the control checklist</h3><p>Identify relevant controls such as MFA, least privilege, privileged-access review, developer-key scoping, token revocation, integration approval, LTI governance, and third-party review.</p><strong>Deliverable:</strong> control checklist with NIST CSF 2.0 mapping.</div></div>
+
+<div class="step"><div class="num">7</div><div><h3>Score risks</h3><p>Use a consistent 5×5 likelihood and impact model. Score inherent risk, document applicable controls, then estimate residual risk.</p>
+<pre>Risk Score = Likelihood × Impact
+
+1–4   = Low
+5–9   = Moderate
+10–16 = High
+17–25 = Critical</pre>
+<p>Every score must include a short rationale and evidence source.</p><strong>Deliverable:</strong> completed risk register.</div></div>
+
+<div class="step"><div class="num">8</div><div><h3>Validate assumptions</h3><p>If interviews are approved, interview a small number of LMS administrators, IAM staff, or cybersecurity professionals. Use interviews to validate assumptions and common practices rather than request confidential details.</p><strong>Deliverable:</strong> assumption-validation table or interview themes.</div></div>
+
+<div class="step"><div class="num">9</div><div><h3>Perform sensitivity analysis</h3><p>Change the likelihood of High/Critical risks by ±1 and determine whether the ranking changes substantially.</p><strong>Deliverable:</strong> sensitivity table.</div></div>
+
+<div class="step"><div class="num">10</div><div><h3>Develop the risk-treatment plan</h3><p>Recommend institution-controlled actions for the highest-priority risks.</p>
+<ul><li>Require MFA for privileged access.</li><li>Conduct periodic privileged-access reviews.</li><li>Limit and document developer-key scopes.</li><li>Establish token rotation and revocation processes.</li><li>Maintain an approved integration inventory.</li><li>Require formal review before enabling new LTI applications.</li><li>Remove unused integrations and credentials.</li></ul>
+<strong>Deliverable:</strong> prioritized treatment roadmap.</div></div>
+
+</section>
+
+<section>
+<h2>11. Risk Register Structure</h2>
+<table>
+<tr><th>ID</th><th>Asset</th><th>Threat Event</th><th>Weakness</th><th>Likelihood</th><th>Impact</th><th>Inherent Risk</th><th>Controls</th><th>Residual Risk</th><th>CSF Mapping</th><th>Treatment</th></tr>
+<tr><td>R-01</td><td>Admin account</td><td>Credential compromise</td><td>Weak privileged-access governance</td><td>4</td><td>5</td><td>20</td><td>MFA, access review</td><td>TBD</td><td>Protect / Govern</td><td>Mitigate</td></tr>
+</table>
+<p class="small">The sample values illustrate the structure only. Final scores must be evidence-based.</p>
+</section>
+
+<section>
+<h2>12. Suggested 10-Week Schedule</h2>
+<table>
+<tr><th>Week</th><th>Work</th><th>Deliverable</th></tr>
+<tr><td>1</td><td>Finalize scope and document the university Canvas environment</td><td>Assessment charter</td></tr>
+<tr><td>2</td><td>Review NIST, Canvas, EDUCAUSE, and literature</td><td>Evidence matrix</td></tr>
+<tr><td>3</td><td>Build asset inventory</td><td>Focused asset list</td></tr>
+<tr><td>4</td><td>Create architecture/data-flow model</td><td>Diagram</td></tr>
+<tr><td>5</td><td>Develop 8–10 risk scenarios</td><td>Scenario catalog</td></tr>
+<tr><td>6</td><td>Build control checklist and CSF mapping</td><td>Control matrix</td></tr>
+<tr><td>7</td><td>Score risks</td><td>Draft risk register</td></tr>
+<tr><td>8</td><td>Optional interview validation</td><td>Validation notes</td></tr>
+<tr><td>9</td><td>Sensitivity analysis and treatment plan</td><td>Priority roadmap</td></tr>
+<tr><td>10</td><td>Finalize report</td><td>Final project package</td></tr>
+</table>
+</section>
+
+<section>
+<h2>13. Expected Final Deliverables</h2>
+<div class="grid">
+<div class="mini">Assessment charter</div><div class="mini">Focused asset inventory</div><div class="mini">Architecture/data-flow diagram</div><div class="mini">8–10 risk scenarios</div><div class="mini">Security-control checklist</div><div class="mini">NIST CSF 2.0 mapping matrix</div><div class="mini">Risk-scoring rubric</div><div class="mini">Prioritized risk register</div><div class="mini">Sensitivity analysis</div><div class="mini">Risk-treatment roadmap</div><div class="mini">Final master's report</div>
+</div>
+</section>
+
+<section>
+<h2>14. Final Recommendation</h2>
+<div class="callout"><strong>Proceed with this narrowed topic.</strong> It gives the researcher enough technical depth for a master's project while keeping the scope realistic. The strongest contribution is a reproducible, evidence-based risk assessment of institution-controlled access and integration risks in Canvas rather than a broad judgment about whether Canvas itself is secure.</div>
+</section>
+
+</main>
+<footer>Research plan for a master's cybersecurity project. Public documentation and vendor practices should be rechecked when the final report is written.</footer>
+</body>
+</html>
